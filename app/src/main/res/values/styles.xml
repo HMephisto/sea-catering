@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BottomNavActiveIndicator" parent="">
+        <item name="android:color">@color/primary</item>
+        <item name="shapeAppearance">@style/IndicatorShape</item>
+    </style>
+
+    <style name="IndicatorShape" parent="ShapeAppearance.Material3.Corner.Small">
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="RoundedImageViewStyle" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+
+    <style name="Widget.SeaCatering.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="materialThemeOverlay">
+            @style/ThemeOverlay.SeaCatering.TextInputLayout.FilledBox
+        </item>
+<!--        <item name="hintTextColor">@color/primary50</item>-->
+        <item name="boxBackgroundColor">@color/white</item>
+<!--        <item name="strokeColor">@color/grey</item>-->
+        <item name="boxStrokeWidth">@dimen/zero_dp</item>
+        <item name="boxStrokeWidthFocused">@dimen/zero_dp</item>
+        <item name="errorIconDrawable">@null</item>
+<!--        <item name="errorTextAppearance">@style/TextAppearance.Caption</item>-->
+<!--        <item name="errorTextColor">@color/error30</item>-->
+        <item name="expandedHintEnabled">true</item>
+<!--        <item name="hintTextAppearance">@style/TextAppearance.Caption</item>-->
+<!--        <item name="passwordToggleTint">@color/grey</item>-->
+<!--        <item name="placeholderTextAppearance">@style/TextAppearance.Body2</item>-->
+<!--        <item name="placeholderTextColor">@color/primary50</item>-->
+<!--        <item name="suffixTextAppearance">@style/TextAppearance.Caption</item>-->
+<!--        <item name="suffixTextColor">@color/primary50</item>-->
+    </style>
+
+    <style name="ThemeOverlay.SeaCatering.TextInputLayout.FilledBox" parent="">
+        <item name="editTextStyle">@style/Widget.SeaCatering.TextInputEditText.FilledBox</item>
+    </style>
+
+    <style name="Widget.SeaCatering.TextInputEditText.FilledBox" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
+<!--        <item name="android:background">@drawable/slr_outline_button_border</item>-->
+<!--        <item name="android:textAppearance">@style/TextAppearance.Body2</item>-->
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Widget.SeaCatering.ActionButton" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="strokeWidth">0dp</item>
+        <item name="cornerRadius">22dp</item>
+        <item name="iconTint">@color/primary</item>
+        <item name="iconSize">24dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">textStart</item>
+<!--        <item name="rippleColor">@color/grey</item>-->
+    </style>
+</resources>

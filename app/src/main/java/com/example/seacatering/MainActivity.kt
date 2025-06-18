@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -11,37 +12,57 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.fragment.app.Fragment
+import com.example.seacatering.databinding.FragmentHomeBinding
+import com.example.seacatering.ui.ContactFragment
+import com.example.seacatering.ui.MenuFragment
+import com.example.seacatering.ui.ProfileFragment
+import com.example.seacatering.ui.SubscriptionFragment
+import com.example.seacatering.ui.home.HomeFragment
 import com.example.seacatering.ui.theme.SeaCateringTheme
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    lateinit  var bottomNav : BottomNavigationView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            SeaCateringTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+        setContentView(R.layout.activity_main)
+
+        loadFragment(HomeFragment())
+        bottomNav =findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNav.setOnItemSelectedListener{
+            when (it.itemId){
+                R.id.menuBottomNavigationHome -> {
+                    loadFragment(HomeFragment())
+                    true
                 }
+                R.id.menuBottomNavigationMealPlan -> {
+                    loadFragment(MenuFragment())
+                    true
+                }
+                R.id.menuBottomNavigationSubscription -> {
+                    loadFragment(SubscriptionFragment())
+                    true
+                }
+                R.id.menuBottomNavigationContact -> {
+                    loadFragment(ContactFragment())
+                    true
+                }
+                R.id.menuBottomNavigationProfile -> {
+                    loadFragment(ProfileFragment())
+                    true
+                }
+                else -> false
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    SeaCateringTheme {
-        Greeting("Android")
+    private  fun loadFragment(fragment: Fragment){
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.frameLayoutMainActivity,fragment)
+        transaction.commit()
     }
 }
