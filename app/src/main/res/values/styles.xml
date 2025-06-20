@@ -42,7 +42,7 @@
     </style>
 
     <style name="Widget.SeaCatering.TextInputEditText.FilledBox" parent="Widget.MaterialComponents.TextInputEditText.FilledBox">
-<!--        <item name="android:background">@drawable/slr_outline_button_border</item>-->
+        <item name="android:background">@drawable/slr_outline_button_border</item>
 <!--        <item name="android:textAppearance">@style/TextAppearance.Body2</item>-->
         <item name="android:textColor">@color/black</item>
     </style>

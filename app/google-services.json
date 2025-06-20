@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "793791969725",
+    "project_id": "sea-catering",
+    "storage_bucket": "sea-catering.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:793791969725:android:ab489a3137e23ade4fbad4",
+        "android_client_info": {
+          "package_name": "com.example.seacatering"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSCS_11rlYat28ygM-it3eDIJVWUlzU78"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
