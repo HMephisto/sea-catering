@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.seacatering.R
 import com.example.seacatering.databinding.FragmentSubcscriptionBinding
+import com.example.seacatering.ui.condition.BottomSheetFragment
 
 class SubscriptionFragment : Fragment() {
 
@@ -22,5 +23,10 @@ class SubscriptionFragment : Fragment() {
         val view =  binding.root
 
         return view
+    }
+
+    private fun setupChooseMeal(){
+        val modalBottomSheet = BottomSheetFragment()
+        modalBottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
     }
 }

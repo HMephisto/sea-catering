@@ -1,24 +1,24 @@
 package com.example.seacatering.data.auth
 
-import com.example.seacatering.domain.model.AuthResult
+import com.example.seacatering.domain.model.Status
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.tasks.await
 
 class FirebaseAuthService(private val firebaseAuth: FirebaseAuth) {
-    suspend fun signIn(email: String, password: String): AuthResult =
+    suspend fun signIn(email: String, password: String): Status =
         try {
             firebaseAuth.signInWithEmailAndPassword(email, password).await()
-            AuthResult.Success
+            Status.Success
         } catch (e: Exception){
-            AuthResult.Failure(e.message ?: "Login Failed")
+            Status.Failure(e.message ?: "Login Failed")
         }
 
-    suspend fun register(email: String, password: String): AuthResult =
+    suspend fun register(email: String, password: String): Status =
         try {
             firebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            AuthResult.Success
+            Status.Success
         } catch (e: Exception){
-            AuthResult.Failure(e.message ?: "Register Failed")
+            Status.Failure(e.message ?: "Register Failed")
         }
 
 }

@@ -20,7 +20,7 @@
         android:id="@+id/divider"
         android:layout_width="@dimen/zero_dp"
         android:layout_height="1dp"
-        android:background="#D5D5D5"
+        android:background="@color/secondary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView" />
@@ -29,8 +29,6 @@
         android:id="@+id/bottomNavigationView"
         android:fitsSystemWindows="true"
         app:labelVisibilityMode="labeled"
-        android:paddingTop="@dimen/normal_margin"
-        android:paddingBottom="@dimen/small_margin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"

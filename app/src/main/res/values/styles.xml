@@ -15,6 +15,18 @@
         <item name="cornerSize">16dp</item>
     </style>
 
+    <style name="SubTitleTextStyle" parent="">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="TitleTextStyle" parent="">
+        <item name="android:textSize">40sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/primary</item>
+    </style>
 
     <style name="Widget.SeaCatering.TextInputLayout.FilledBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
         <item name="materialThemeOverlay">

@@ -1,6 +1,5 @@
 package com.example.seacatering.ui.auth
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
@@ -17,8 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.seacatering.R
 import com.example.seacatering.databinding.FragmentAuthLoginBinding
 import androidx.fragment.app.viewModels
-import com.example.seacatering.domain.model.AuthResult
-import com.google.firebase.auth.FirebaseAuth
+import com.example.seacatering.domain.model.Status
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -68,7 +66,7 @@ class AuthLoginFragment : Fragment() {
     private fun setupObserve() {
         viewModel.authState.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is AuthResult.Failure -> {
+                is Status.Failure -> {
                     Log.e("GAGAL", result.message)
                     Toast.makeText(requireContext(), "Login failed!! Check your email or password", Toast.LENGTH_SHORT).apply {
                         view?.setBackgroundColor(Color.RED)
@@ -77,7 +75,7 @@ class AuthLoginFragment : Fragment() {
                     }
                 }
 
-                is AuthResult.Success -> {
+                is Status.Success -> {
                     Log.e("Berhasil", "")
                     Toast.makeText(requireContext(), "Login success!!", Toast.LENGTH_SHORT).apply {
                         view?.setBackgroundColor(Color.GREEN)
@@ -88,9 +86,9 @@ class AuthLoginFragment : Fragment() {
                     findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
                 }
 
-                is AuthResult.Loading -> {
+                is Status.Loading -> {
                     Log.e("Loading", "load")
-                }
+                }else -> {}
             }
         }
     }

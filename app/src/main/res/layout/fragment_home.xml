@@ -7,23 +7,28 @@
     android:orientation="vertical"
     tools:context=".ui.home.HomeFragment">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo_text"/>
+<!--    <ImageView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:src="@drawable/logo_text"/>-->
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        android:text="FEATURE"/>
+        style="@style/TitleTextStyle"
+        android:text="SEA CATERING"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        style="@style/SubTitleTextStyle"
+        android:text="feature"/>
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
         android:scrollbars="none"
         >
         <LinearLayout
@@ -82,7 +87,7 @@
                         android:layout_height="60dp"
                         android:layout_gravity="bottom"
                         android:background="@android:color/black"
-                        android:alpha="0.5" />
+                        android:alpha="0.5"/>
 
                     <TextView
                         android:layout_width="wrap_content"

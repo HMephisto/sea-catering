@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.seacatering.domain.model.AuthResult
+import com.example.seacatering.domain.model.Status
 import com.example.seacatering.domain.model.User
 import com.example.seacatering.domain.usecase.CreateUserUseCase
 import com.example.seacatering.domain.usecase.RegisterUseCase
@@ -17,15 +17,15 @@ class AuthRegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase,
     private val createUserUseCase: CreateUserUseCase
 ) : ViewModel(){
-    private val _registerState = MutableLiveData<AuthResult>()
-    val registerState: LiveData<AuthResult> = _registerState
+    private val _registerState = MutableLiveData<Status>()
+    val registerState: LiveData<Status> = _registerState
 
-    private val _createUserState = MutableLiveData<AuthResult>()
-    val createUserState: LiveData<AuthResult> = _createUserState
+    private val _createUserState = MutableLiveData<Status>()
+    val createUserState: LiveData<Status> = _createUserState
 
     fun register(email: String, password: String){
         viewModelScope.launch{
-            _registerState.value = AuthResult.Loading
+            _registerState.value = Status.Loading
 
             val result = registerUseCase(email, password)
 
@@ -35,7 +35,7 @@ class AuthRegisterViewModel @Inject constructor(
 
     fun createUser(user: User){
         viewModelScope.launch{
-            _createUserState.value = AuthResult.Loading
+            _createUserState.value = Status.Loading
 
             val result = createUserUseCase(user)
 

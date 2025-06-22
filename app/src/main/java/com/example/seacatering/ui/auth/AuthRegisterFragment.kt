@@ -16,8 +16,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.seacatering.R
 import com.example.seacatering.databinding.FragmentAuthRegisterBinding
-import com.example.seacatering.databinding.FragmentContactBinding
-import com.example.seacatering.domain.model.AuthResult
+import com.example.seacatering.domain.model.Status
 import com.example.seacatering.domain.model.User
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,29 +67,30 @@ class AuthRegisterFragment : Fragment() {
     private fun setupObserve(){
         viewModel.registerState.observe(viewLifecycleOwner) {result ->
             when (result) {
-                is AuthResult.Failure -> {
+                is Status.Failure -> {
                     Toast.makeText(requireContext(), "Register failed!!", Toast.LENGTH_SHORT).apply {
                         view?.setBackgroundColor(Color.RED)
                         view?.findViewById<TextView>(android.R.id.message)?.setTextColor(Color.WHITE)
                         show()
                     }
                 }
-                is AuthResult.Success -> {
+                is Status.Success -> {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
                     val user = User(uid.toString(), binding.registerInputFullName.text.toString(), binding.registerInputEmail.text.toString())
 
                     viewModel.createUser(user)
                 }
-                is AuthResult.Loading -> {}
+                is Status.Loading -> {}
+                else -> {}
             }
         }
 
         viewModel.createUserState.observe(viewLifecycleOwner) {result ->
             when (result) {
-                is AuthResult.Failure -> {
+                is Status.Failure -> {
                     Log.e("GAGAL", result.message)
                 }
-                is AuthResult.Success -> {
+                is Status.Success -> {
                     Toast.makeText(requireContext(), "Register success!!", Toast.LENGTH_SHORT).apply {
                         view?.setBackgroundColor(Color.GREEN)
                         view?.findViewById<TextView>(android.R.id.message)?.setTextColor(Color.WHITE)
@@ -99,9 +99,10 @@ class AuthRegisterFragment : Fragment() {
                     requireActivity().finish()
                     findNavController().navigate(R.id.action_authRegisterFragment_to_mainActivity)
                 }
-                is AuthResult.Loading -> {
+                is Status.Loading -> {
                     Log.e("LOAD", "LOADING")
                 }
+                else -> {}
             }
         }
     }
