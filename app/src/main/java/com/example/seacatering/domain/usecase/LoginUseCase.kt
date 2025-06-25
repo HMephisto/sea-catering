@@ -7,4 +7,5 @@ class LoginUseCase(private val repo: AuthRepository) {
     suspend operator fun invoke(email: String, password: String): Status {
         return repo.login(email, password)
     }
+
 }

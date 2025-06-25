@@ -2,6 +2,7 @@ package com.example.seacatering.data.firestore
 
 import com.example.seacatering.domain.model.Menu
 import com.example.seacatering.domain.model.Status
+import com.example.seacatering.domain.model.Subscription
 import com.example.seacatering.domain.model.User
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -31,5 +32,13 @@ class FirestoreService(private val db: FirebaseFirestore) {
             Status.SuccessWithData(menu)
         } catch (e: Exception) {
             Status.Failure(e.message ?: "Failed to get Menu Data")
+        }
+
+    suspend fun createSubscription(subscription: Subscription): Status =
+        try {
+            db.collection("subscriptions").document(subscription.id).set(subscription).await()
+            Status.Success
+        }catch (e: Exception){
+            Status.Failure(e.message ?: "Failed to Create Subscription")
         }
     }

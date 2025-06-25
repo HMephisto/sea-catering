@@ -4,6 +4,7 @@ import com.example.seacatering.data.auth.FirebaseAuthService
 import com.example.seacatering.data.repository.AuthRepositoryImpl
 import com.example.seacatering.domain.repository.AuthRepository
 import com.example.seacatering.domain.usecase.LoginUseCase
+import com.example.seacatering.domain.usecase.LogoutUseCase
 import com.example.seacatering.domain.usecase.RegisterUseCase
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Module
@@ -33,4 +34,8 @@ object AuthModule {
     @Provides
     fun provideRegisterUseCase(repo: AuthRepository): RegisterUseCase =
         RegisterUseCase(repo)
+
+    @Provides
+    fun provideLogoutUseCase(repo: AuthRepository): LogoutUseCase =
+        LogoutUseCase(repo)
 }

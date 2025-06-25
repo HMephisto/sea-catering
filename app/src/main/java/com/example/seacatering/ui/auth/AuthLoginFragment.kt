@@ -16,8 +16,11 @@ import androidx.navigation.fragment.findNavController
 import com.example.seacatering.R
 import com.example.seacatering.databinding.FragmentAuthLoginBinding
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.example.seacatering.domain.model.Status
+import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AuthLoginFragment : Fragment() {
@@ -39,6 +42,15 @@ class AuthLoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch {
+            viewModel.userId.collect { id ->
+                if (!id.isNullOrBlank()) {
+                    findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
+                    requireActivity().finish()
+                }
+            }
+        }
 
         initTextWatcher()
         setupForm()
@@ -82,8 +94,11 @@ class AuthLoginFragment : Fragment() {
                         view?.findViewById<TextView>(android.R.id.message)?.setTextColor(Color.WHITE)
                         show()
                     }
-                    requireActivity().finish()
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid
+                    viewModel.saveUserId(userId.toString())
+
                     findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
+                    requireActivity().finish()
                 }
 
                 is Status.Loading -> {

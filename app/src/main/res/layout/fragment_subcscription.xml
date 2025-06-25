@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.SubscriptionFragment">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Subscription Form"
+            android:textAlignment="center"
             android:textSize="30dp"
-            android:textStyle="bold"
-            android:textAlignment="center"/>
+            android:textStyle="bold" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/subscriptionName"
@@ -23,8 +27,8 @@
             android:layout_marginHorizontal="@dimen/screen_margin"
             android:layout_marginVertical="@dimen/screen_margin"
             android:hint="Name"
-            app:placeholderText="Masukan Nama Anda"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:placeholderText="Masukan Nama Anda">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/subscriptionInputName"
@@ -34,15 +38,17 @@
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/subscriptionNumber"
             style="@style/Widget.SeaCatering.TextInputLayout.FilledBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/screen_margin"
+            android:layout_marginVertical="16dp"
             android:hint="Phone Number"
-            app:placeholderText="Masukan Nama Anda"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:placeholderText="Masukan Nama Anda">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/subscriptionInputNumber"
@@ -53,149 +59,186 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/selectMealButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Choose Plan"/>
+            android:text="Select Plan" />
+
+
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="16dp"
-            >
+            android:layout_marginBottom="16dp">
+
             <LinearLayout
+
+                android:id="@+id/selectedMealPlan"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="8dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="8dp">
+
                 <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/mealImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:scaleType="centerCrop"
-                    app:shapeAppearanceOverlay="@style/RoundedImageViewStyle"
-                    android:src="@drawable/meal_custom"/>
+                    android:src="@drawable/meal_custom"
+                    app:shapeAppearanceOverlay="@style/RoundedImageViewStyle" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="4dp"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/planName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="20dp"
                         android:text="NAMA PLAN"
-                        android:textStyle="bold"/>
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:id="@+id/planPrice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15dp"
                         android:text="Rp. 20.000"
-                        android:textStyle="bold"/>
+                        android:textSize="15dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/noMealText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:textAlignment="center"
+                style="@style/SubTitleTextStyle"
+                android:text="No Meal PLan Selected" />
         </com.google.android.material.card.MaterialCardView>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Meal Type"/>
+            style="@style/SubTitleTextStyle"
+            android:text="Meal Type" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/breakfastButton"
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/mealTypeBreakfast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Breakfast"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/lunchButton"
+                android:text="Breakfast" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/mealTypeLunch"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginHorizontal="8dp"
-                android:text="LUNCH"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/dinnerButton"
+                android:text="Lunch" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/mealTypeDinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="DINNER"/>
+                android:text="Dinner" />
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Delivery Days"/>
+            style="@style/SubTitleTextStyle"
+            android:text="Delivery Days" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mondayButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Monday"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/tuesdayButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="4dp"
-                android:text="Tuesday"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/wednesdayButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ellipsize="middle"
-                android:text="Wednesday"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/thursdayButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Thursday"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/fridayButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginHorizontal="4dp"
-                android:text="Friday"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/saturdayButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Saturday"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:orientation="horizontal">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sundayButton"
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Sunday"/>
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/deliveryMonday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Monday" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/deliveryThursday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Thursday" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/deliverySunday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sunday" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/deliveryTuesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tuesday" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/deliveryFriday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Friday" />
+
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/deliveryWednesday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Wednesday" />
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/deliverySaturday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Saturday" />
+            </LinearLayout>
         </LinearLayout>
+
+
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/subscriptionAllergies"
@@ -204,8 +247,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:hint="Allergies"
-            app:placeholderText="Masukan Nama Anda"
-            app:endIconMode="clear_text">
+            app:endIconMode="clear_text"
+            app:placeholderText="Masukan Nama Anda">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/subscriptionInputAllergies"
@@ -220,9 +263,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:text="Checkout"/>
+            android:text="Checkout" />
     </LinearLayout>
-
 
 
 </ScrollView>

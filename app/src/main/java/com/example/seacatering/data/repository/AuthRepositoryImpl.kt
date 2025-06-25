@@ -15,9 +15,7 @@ class AuthRepositoryImpl(private val authService: FirebaseAuthService) : AuthRep
     ): Status = authService.register(email, password)
 
 
-    override fun logout() {
-        TODO("Not yet implemented")
-    }
+    override fun logout() : Status = authService.signOut()
 
     override fun getCurrentUserId(): String? {
         TODO("Not yet implemented")

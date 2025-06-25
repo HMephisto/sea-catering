@@ -21,4 +21,11 @@ class FirebaseAuthService(private val firebaseAuth: FirebaseAuth) {
             Status.Failure(e.message ?: "Register Failed")
         }
 
+     fun signOut() : Status =
+        try {
+            firebaseAuth.signOut()
+            Status.Success
+        } catch (e: Exception){
+            Status.Failure(e.message ?: "signOut Failed")
+        }
 }

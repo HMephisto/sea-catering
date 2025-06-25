@@ -4,10 +4,13 @@ import com.example.seacatering.data.auth.FirebaseAuthService
 import com.example.seacatering.data.firestore.FirestoreService
 import com.example.seacatering.data.repository.AuthRepositoryImpl
 import com.example.seacatering.data.repository.MenuRepositoryImpl
+import com.example.seacatering.data.repository.SubscriptionRepositoryImpl
 import com.example.seacatering.data.repository.UserRepositortImpl
 import com.example.seacatering.domain.repository.AuthRepository
 import com.example.seacatering.domain.repository.MenuRepository
+import com.example.seacatering.domain.repository.SubscriptionRepository
 import com.example.seacatering.domain.repository.UserRepository
+import com.example.seacatering.domain.usecase.CreateSubscriptionUseCase
 import com.example.seacatering.domain.usecase.CreateUserUseCase
 import com.example.seacatering.domain.usecase.GetAllMenuUseCase
 import com.example.seacatering.domain.usecase.GetMenuDetailUseCase
@@ -37,6 +40,10 @@ object FirestoreModule {
         MenuRepositoryImpl(firestoreService)
 
     @Provides
+    fun provideSubscriptionRepository(firestoreService: FirestoreService): SubscriptionRepository =
+        SubscriptionRepositoryImpl(firestoreService)
+
+    @Provides
     fun provideCreateUserUseCase(repo: UserRepository): CreateUserUseCase =
         CreateUserUseCase(repo)
 
@@ -47,4 +54,8 @@ object FirestoreModule {
     @Provides
     fun provideGetMenuDetailUseCase(repo: MenuRepository): GetMenuDetailUseCase =
         GetMenuDetailUseCase(repo)
+
+    @Provides
+    fun provideCreateSubscriptionUseCase(repo: SubscriptionRepository): CreateSubscriptionUseCase =
+        CreateSubscriptionUseCase(repo)
 }
