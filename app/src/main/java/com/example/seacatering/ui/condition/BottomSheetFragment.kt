@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.example.seacatering.databinding.ModalBottomSheetContentBinding
-import com.example.seacatering.ui.SubscriptionSelectMealAdapter
+import com.example.seacatering.ui.Subscription.SubscriptionSelectMealAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 class BottomSheetFragment : BottomSheetDialogFragment() {
 

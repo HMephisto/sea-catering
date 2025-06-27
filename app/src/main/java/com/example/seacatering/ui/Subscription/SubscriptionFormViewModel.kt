@@ -1,4 +1,4 @@
-package com.example.seacatering.ui
+package com.example.seacatering.ui.Subscription
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SubscriptionViewModel @Inject constructor(
+class SubscriptionFormViewModel @Inject constructor(
     private val createSubscriptionUseCase: CreateSubscriptionUseCase,
     private val getAllMenuUseCase: GetAllMenuUseCase,
     private val getUserIdUseCase: GetUserIdUseCase
@@ -50,7 +50,4 @@ class SubscriptionViewModel @Inject constructor(
 
     val userId: StateFlow<String?> = getUserIdUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
-
-
-
 }

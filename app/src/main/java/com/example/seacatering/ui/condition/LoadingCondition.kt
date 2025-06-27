@@ -6,13 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
-import com.example.seacatering.databinding.FragmentConditionBinding
+import com.bumptech.glide.Glide
 import com.example.seacatering.R
+import com.example.seacatering.databinding.FragmentConditionBinding
 
-
-class AuthLoginErrorCondition : DialogFragment() {
+class LoadingCondition : DialogFragment() {
     private var _binding: FragmentConditionBinding? = null
     private val binding get() = _binding!!
 
@@ -29,35 +30,30 @@ class AuthLoginErrorCondition : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setOutput()
-        setNavigation()
     }
 
     override fun onStart() {
         super.onStart()
-        val width = (resources.displayMetrics.widthPixels * 0.9).toInt()
-        dialog?.window?.setLayout(width, ViewGroup.LayoutParams.WRAP_CONTENT)
     }
 
-    private fun setOutput(){
+    private fun setOutput() {
         dialog?.setCancelable(false)
 
         if (dialog != null && dialog!!.window != null) {
             dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
-        binding.registerConditionImage.visibility = View.GONE
+        binding.registerConditionImage.setImageResource(R.drawable.loading_spinner)
 
-        binding.registerConditionTitle.text = "Gagal Masuk!"
-        binding.registerConditionContent.text = "Periksa Email dan Kata Sandi"
-        binding.registerConditionButton.text = "Coba Lagi"
-        binding.registerConditionButton.backgroundTintList = context?.getColorStateList(R.color.error)
-        binding.registerConditionButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white))
-    }
+        val rotateAnimation = AnimationUtils.loadAnimation(
+            binding.registerConditionImage.context,
+            R.anim.rotate_animation
+        )
 
+        binding.registerConditionImage.startAnimation(rotateAnimation)
 
-    private fun setNavigation(){
-        binding.registerConditionButton.setOnClickListener {
-            dialog!!.dismiss()
-        }
+        binding.registerConditionTitle.visibility = View.GONE
+        binding.registerConditionContent.visibility = View.GONE
+        binding.registerConditionButton.visibility = View.GONE
     }
 
     override fun onDestroyView() {

@@ -1,4 +1,4 @@
-package com.example.seacatering.ui
+package com.example.seacatering.ui.Subscription
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

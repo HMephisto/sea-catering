@@ -10,10 +10,13 @@ import com.example.seacatering.domain.repository.AuthRepository
 import com.example.seacatering.domain.repository.MenuRepository
 import com.example.seacatering.domain.repository.SubscriptionRepository
 import com.example.seacatering.domain.repository.UserRepository
+import com.example.seacatering.domain.usecase.CancelSubscriptionUseCase
 import com.example.seacatering.domain.usecase.CreateSubscriptionUseCase
 import com.example.seacatering.domain.usecase.CreateUserUseCase
 import com.example.seacatering.domain.usecase.GetAllMenuUseCase
 import com.example.seacatering.domain.usecase.GetMenuDetailUseCase
+import com.example.seacatering.domain.usecase.GetSubscriptionUseCase
+import com.example.seacatering.domain.usecase.TogglePauseSubscriptionUseCase
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -58,4 +61,15 @@ object FirestoreModule {
     @Provides
     fun provideCreateSubscriptionUseCase(repo: SubscriptionRepository): CreateSubscriptionUseCase =
         CreateSubscriptionUseCase(repo)
+
+    @Provides
+    fun provideGetSubscriptionUseCase(repo: SubscriptionRepository): GetSubscriptionUseCase =
+        GetSubscriptionUseCase(repo)
+
+    @Provides
+    fun provideTogglePauseSubscriptionUseCase(repo: SubscriptionRepository): TogglePauseSubscriptionUseCase =
+        TogglePauseSubscriptionUseCase(repo)
+    @Provides
+    fun provideCancelSubscriptionUseCase(repo: SubscriptionRepository): CancelSubscriptionUseCase =
+        CancelSubscriptionUseCase(repo)
 }

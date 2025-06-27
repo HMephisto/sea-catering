@@ -10,6 +10,7 @@
 
     <color name="error">#FF0000</color>
     <color name="grey">#767676</color>
+    <color name="green">#15FF00</color>
 
     <color name="primary">#328E6E</color>
     <color name="primary_variant">#67AE6E</color>

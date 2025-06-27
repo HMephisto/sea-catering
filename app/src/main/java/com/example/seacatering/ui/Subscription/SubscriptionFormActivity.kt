@@ -1,20 +1,17 @@
-package com.example.seacatering.ui
+package com.example.seacatering.ui.Subscription
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.seacatering.R
-import com.example.seacatering.databinding.FragmentSubcscriptionBinding
+import com.example.seacatering.databinding.ActivitySubscriptionFormBinding
 import com.example.seacatering.domain.model.Menu
 import com.example.seacatering.domain.model.Status
 import com.example.seacatering.domain.model.Subscription
@@ -22,18 +19,19 @@ import com.example.seacatering.ui.condition.BottomSheetFragment
 import com.google.android.material.checkbox.MaterialCheckBox
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.Locale
+import kotlin.getValue
 
 @AndroidEntryPoint
-class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemClickListener {
+class SubscriptionFormActivity : AppCompatActivity(), SubscriptionSelectMealAdapter.OnItemClickListener {
 
-    private var _binding: FragmentSubcscriptionBinding? = null
-    private val binding get() = _binding!!
-
-    private val viewModel: SubscriptionViewModel by viewModels()
+    private val viewModel: SubscriptionFormViewModel by viewModels()
     private val adapter: SubscriptionSelectMealAdapter = SubscriptionSelectMealAdapter(this)
     private val modalBottomSheet = BottomSheetFragment()
 
     private var selectedMenu: String = ""
+    private var selectedPrice: Int = 0
     private var breakfastMealType: String = ""
     private var lunchMealType: String = ""
     private var dinnerMealType: String = ""
@@ -46,21 +44,16 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
     private var saturdayDeliveryDay: String = ""
     private var sundayDeliveryDay: String = ""
 
+    private var mealTypes: String = ""
+    private var deliveryDays: String = ""
+    private var totalPrice: Double = 0.0
 
+    private lateinit var binding: ActivitySubscriptionFormBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSubcscriptionBinding.inflate(inflater, container, false)
-        val view =  binding.root
-
-        return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivitySubscriptionFormBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         binding.selectedMealPlan.visibility = View.INVISIBLE
 
@@ -70,7 +63,10 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
         checkingDeliveryDays()
         setupForm()
         onSelectMealButton()
+        onBackClick()
+        calculatePrice()
     }
+
 
     private fun onSelectMealButton(){
         binding.selectMealButton.setOnClickListener{
@@ -90,8 +86,6 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
     }
 
     private fun setupCreateSubscriptionRequest(){
-        var mealType = breakfastMealType + lunchMealType + dinnerMealType
-        var deliveryDays = mondayDeliveryDay + tuesdayDeliveryDay + wednesdayDeliveryDay + thursdayDeliveryDay + fridayDeliveryDay + saturdayDeliveryDay + sundayDeliveryDay
         lifecycleScope.launch {
             viewModel.userId.collect { id ->
                 var subscription = Subscription(
@@ -100,23 +94,48 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     selectedMenu,
                     binding.subscriptionInputName.text.toString(),
                     binding.subscriptionInputNumber.text.toString(),
-                    mealType,
+                    mealTypes,
                     deliveryDays,
                     binding.subscriptionInputAllergies.text.toString(),
                     "Active",
+                    totalPrice
                 )
                 viewModel.createSubscription(subscription)
             }
-
         }
     }
 
+    private fun setMealTypes(){
+        mealTypes = breakfastMealType + lunchMealType + dinnerMealType
+    }
+
+    private fun setDeliveryDays(){
+        deliveryDays = mondayDeliveryDay + tuesdayDeliveryDay + wednesdayDeliveryDay + thursdayDeliveryDay + fridayDeliveryDay + saturdayDeliveryDay + sundayDeliveryDay
+    }
+
+    private fun calculatePrice() {
+        setMealTypes()
+        setDeliveryDays()
+        totalPrice = selectedPrice * countDays(deliveryDays) * countMeals(mealTypes) * 4.3
+        binding.totalPrice.text = formatToIDR(totalPrice)
+    }
+
+    fun countDays(input: String): Int {
+        val validDays = ('1'..'7').toSet()
+        return input.toSet().count { it in validDays }
+    }
+
+    fun countMeals(input: String): Int {
+        val meals = listOf("Breakfast", "Lunch", "Dinner")
+        return meals.count { input.contains(it) }
+    }
+
     private fun setupObserver(){
-        viewModel.createSubscriptionState.observe(viewLifecycleOwner) { result ->
+        viewModel.createSubscriptionState.observe(this@SubscriptionFormActivity) { result ->
             when (result) {
                 is Status.Loading -> {}
                 is Status.Success -> {
-                    Toast.makeText(requireContext(), "Subscription Created", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Subscription Created", Toast.LENGTH_SHORT).show()
                 }
                 else -> {}
             }
@@ -186,6 +205,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     breakfastMealType = ""
                 }
             }
+            calculatePrice()
         }
         binding.mealTypeLunch.addOnCheckedStateChangedListener{ checkBox, state ->
             when (state) {
@@ -196,6 +216,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     lunchMealType = ""
                 }
             }
+            calculatePrice()
         }
         binding.mealTypeDinner.addOnCheckedStateChangedListener{ checkBox, state ->
             when (state) {
@@ -206,6 +227,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     dinnerMealType = ""
                 }
             }
+            calculatePrice()
         }
     }
 
@@ -219,6 +241,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     mondayDeliveryDay = ""
                 }
             }
+            calculatePrice()
         }
         binding.deliveryTuesday.addOnCheckedStateChangedListener{ checkBox, state ->
             when (state) {
@@ -229,6 +252,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     tuesdayDeliveryDay = ""
                 }
             }
+            calculatePrice()
         }
         binding.deliveryWednesday.addOnCheckedStateChangedListener{ checkBox, state ->
             when (state) {
@@ -239,6 +263,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     wednesdayDeliveryDay = ""
                 }
             }
+            calculatePrice()
         }
 
         binding.deliveryThursday.addOnCheckedStateChangedListener{ checkBox, state ->
@@ -250,6 +275,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     thursdayDeliveryDay = ""
                 }
             }
+            calculatePrice()
         }
         binding.deliveryFriday.addOnCheckedStateChangedListener{ checkBox, state ->
             when (state) {
@@ -260,6 +286,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     fridayDeliveryDay = ""
                 }
             }
+            calculatePrice()
         }
         binding.deliverySaturday.addOnCheckedStateChangedListener{ checkBox, state ->
             when (state) {
@@ -270,6 +297,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     saturdayDeliveryDay = ""
                 }
             }
+            calculatePrice()
         }
         binding.deliverySunday.addOnCheckedStateChangedListener{ checkBox, state ->
             when (state) {
@@ -280,6 +308,7 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
                     sundayDeliveryDay = ""
                 }
             }
+            calculatePrice()
         }
     }
 
@@ -343,14 +372,14 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
     }
 
     private fun errorSelectedMeal() {
-        Toast.makeText(requireContext(), "Please Select a meal!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Please Select a meal!!", Toast.LENGTH_SHORT).show()
     }
     private fun errorMealType() {
-        Toast.makeText(requireContext(), "Please Select a meal type!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Please Select a meal type!!", Toast.LENGTH_SHORT).show()
     }
 
     private fun errorDeliveryDays() {
-        Toast.makeText(requireContext(), "Please Select a delivery days!!", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Please Select a delivery days!!", Toast.LENGTH_SHORT).show()
     }
 
     private fun defaultBorderName() {
@@ -373,10 +402,10 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
 
     private fun setupChooseMeal() {
 
-        modalBottomSheet.show(childFragmentManager, BottomSheetFragment.TAG)
+        modalBottomSheet.show(supportFragmentManager, BottomSheetFragment.TAG)
 
         viewModel.getAllMenu()
-        viewModel.getAllMenuState.observe(viewLifecycleOwner) { result ->
+        viewModel.getAllMenuState.observe(this@SubscriptionFormActivity) { result ->
             when (result) {
                 is Status.SuccessWithData<*> -> {
                     Log.e("done", "done")
@@ -415,7 +444,21 @@ class SubscriptionFragment : Fragment(), SubscriptionSelectMealAdapter.OnItemCli
         binding.planPrice.text = "Rp. " + item.price.toString()
 
         selectedMenu = item.id
-
+        selectedPrice = item.price
+        calculatePrice()
         modalBottomSheet.dismiss()
+    }
+
+    private fun onBackClick() {
+        binding.topAppBar.setNavigationOnClickListener {
+            finish()
+        }
+    }
+
+
+    fun formatToIDR(amount: Double): String {
+        val localeID = Locale("in", "ID")
+        val formatter = NumberFormat.getCurrencyInstance(localeID)
+        return formatter.format(amount)
     }
 }

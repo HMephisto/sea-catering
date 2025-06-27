@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import com.example.seacatering.ui.ContactFragment
 import com.example.seacatering.ui.menu.MenuFragment
 import com.example.seacatering.ui.ProfileFragment
-import com.example.seacatering.ui.SubscriptionFragment
+import com.example.seacatering.ui.Subscription.SubscriptionFragment
 import com.example.seacatering.ui.home.HomeFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint

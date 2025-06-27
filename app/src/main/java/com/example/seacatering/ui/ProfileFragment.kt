@@ -48,7 +48,7 @@ class ProfileFragment : Fragment() {
 
                     Status.Success -> {
                         viewModel.saveUserId("")
-                        val intent = Intent(requireContext(), AuthActivity::class.java)
+                        val intent = Intent(this.context, AuthActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
                     }

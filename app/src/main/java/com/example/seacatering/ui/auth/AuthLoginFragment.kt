@@ -18,6 +18,7 @@ import com.example.seacatering.databinding.FragmentAuthLoginBinding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.seacatering.domain.model.Status
+import com.example.seacatering.ui.condition.LoadingCondition
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -28,7 +29,7 @@ class AuthLoginFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: AuthLoginViewModel by viewModels()
-
+    private val dialog = LoadingCondition()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +47,7 @@ class AuthLoginFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.userId.collect { id ->
                 if (!id.isNullOrBlank()) {
+                    Log.e("status", id)
                     findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
                     requireActivity().finish()
                 }
@@ -79,22 +81,23 @@ class AuthLoginFragment : Fragment() {
         viewModel.authState.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Status.Failure -> {
+                    dialog.dismiss()
                     Log.e("GAGAL", result.message)
-                    Toast.makeText(requireContext(), "Login failed!! Check your email or password", Toast.LENGTH_SHORT).apply {
-                        view?.setBackgroundColor(Color.RED)
-                        view?.findViewById<TextView>(android.R.id.message)?.setTextColor(Color.WHITE)
-                        show()
-                    }
+//                    Toast.makeText(requireContext(), "Login failed!! Check your email or password", Toast.LENGTH_SHORT).apply {
+//                        view?.setBackgroundColor(Color.RED)
+//                        view?.findViewById<TextView>(android.R.id.message)?.setTextColor(Color.WHITE)
+//                        show()
+//                    }
+                    findNavController().navigate(R.id.action_authLoginFragment_to_authLoginErrorCondition)
                 }
 
                 is Status.Success -> {
                     Log.e("Berhasil", "")
-                    Toast.makeText(requireContext(), "Login success!!", Toast.LENGTH_SHORT).apply {
-                        view?.setBackgroundColor(Color.GREEN)
-                        view?.findViewById<TextView>(android.R.id.message)?.setTextColor(Color.WHITE)
-                        show()
-                    }
+                    dialog.dismiss()
+                    Toast.makeText(requireContext(), "Login success!!", Toast.LENGTH_SHORT).show()
+
                     val userId = FirebaseAuth.getInstance().currentUser?.uid
+                    Log.e("savedID", userId.toString())
                     viewModel.saveUserId(userId.toString())
 
                     findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
@@ -103,6 +106,7 @@ class AuthLoginFragment : Fragment() {
 
                 is Status.Loading -> {
                     Log.e("Loading", "load")
+                    dialog.show(parentFragmentManager, "MyCustomDialog")
                 }else -> {}
             }
         }
