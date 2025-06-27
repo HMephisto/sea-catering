@@ -1,5 +1,6 @@
 package com.example.seacatering.ui.Subscription
 
+import android.app.Activity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -65,13 +66,13 @@ class SubscriptionFormActivity : AppCompatActivity(), SubscriptionSelectMealAdap
         onSelectMealButton()
         onBackClick()
         calculatePrice()
+        setupObserver()
     }
 
 
     private fun onSelectMealButton(){
         binding.selectMealButton.setOnClickListener{
             setupChooseMeal()
-            setupObserver()
         }
     }
 
@@ -136,6 +137,8 @@ class SubscriptionFormActivity : AppCompatActivity(), SubscriptionSelectMealAdap
                 is Status.Loading -> {}
                 is Status.Success -> {
                     Toast.makeText(this, "Subscription Created", Toast.LENGTH_SHORT).show()
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 }
                 else -> {}
             }

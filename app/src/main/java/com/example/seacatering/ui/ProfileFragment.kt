@@ -3,15 +3,28 @@ package com.example.seacatering.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.example.seacatering.R
 import com.example.seacatering.databinding.FragmentProfileBinding
 import com.example.seacatering.domain.model.Status
+import com.example.seacatering.domain.model.SubscriptionWithMenu
+import com.example.seacatering.domain.model.Testimony
+import com.example.seacatering.domain.model.User
 import com.example.seacatering.ui.auth.AuthActivity
+import com.example.seacatering.ui.condition.TestimonySubmitionFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.getValue
 
 @AndroidEntryPoint
@@ -21,6 +34,11 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewmodel by viewModels()
+
+    private val testimonyModal = TestimonySubmitionFragment()
+
+    private var username = ""
+    private var userId = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +55,61 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         onLogoutButton()
+        onAddTestimony()
+        setupObserver()
+        setupTestimony()
+        getUserName()
+    }
+
+    private fun getUserName(){
+        lifecycleScope.launch {
+            viewModel.userId.collect { id ->
+                if (!id.isNullOrBlank()) {
+                    Log.e("data", id)
+                    userId = id
+                    viewModel.getUserData(userId)
+                }
+            }
+        }
+    }
+
+    private fun onAddTestimony() {
+        binding.addTestimony.setOnClickListener {
+            testimonyModal.show(parentFragmentManager, "testimony")
+        }
+    }
+
+    private fun setupTestimony() {
+        parentFragmentManager.setFragmentResultListener("testimonyResult", this) { _, bundle ->
+            val message = bundle.getString("message")
+            val rating = bundle.getInt("rating")
+
+            val testimony = Testimony(userId, userId, username, message.toString(), rating)
+            viewModel.createTestimony(testimony)
+        }
+    }
+
+    private fun setupObserver(){
+        viewModel.getUserDataState.observe(viewLifecycleOwner) {result ->
+            when (result){
+                is Status.SuccessWithData<*> -> {
+                    val user = result.data as User
+                    username = user.name
+                    binding.username.text = username
+                }
+                else -> {
+
+                }
+            }
+        }
+        viewModel.createTestimonyState.observe(viewLifecycleOwner) {result ->
+            when (result){
+                is Status.Success -> {
+                    Toast.makeText(requireContext(), "Testimony Added", Toast.LENGTH_SHORT).show()
+                }
+                else -> {}
+            }
+        }
     }
 
     private fun onLogoutButton() {

@@ -78,6 +78,10 @@ class AuthRegisterFragment : Fragment() {
                     val uid = FirebaseAuth.getInstance().currentUser?.uid
                     val user = User(uid.toString(), binding.registerInputFullName.text.toString(), binding.registerInputEmail.text.toString())
 
+                    val userId = FirebaseAuth.getInstance().currentUser?.uid
+                    Log.e("savedID", userId.toString())
+                    viewModel.saveUserId(userId.toString())
+
                     viewModel.createUser(user)
                 }
                 is Status.Loading -> {}

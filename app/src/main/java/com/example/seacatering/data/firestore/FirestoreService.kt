@@ -5,6 +5,7 @@ import com.example.seacatering.domain.model.Menu
 import com.example.seacatering.domain.model.Status
 import com.example.seacatering.domain.model.Subscription
 import com.example.seacatering.domain.model.SubscriptionWithMenu
+import com.example.seacatering.domain.model.Testimony
 import com.example.seacatering.domain.model.User
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -15,6 +16,15 @@ class FirestoreService(private val db: FirebaseFirestore) {
         try {
             db.collection("users").document(user.id).set(user).await()
             Status.Success
+        } catch (e: Exception) {
+            Status.Failure(e.message ?: "Failed to Create User")
+        }
+
+    suspend fun getUserData(userId:String): Status =
+        try {
+            val result =  db.collection("users").document(userId).get().await()
+            val user = result.toObject(User::class.java)
+            Status.SuccessWithData(user)
         } catch (e: Exception) {
             Status.Failure(e.message ?: "Failed to Create User")
         }
@@ -102,5 +112,22 @@ class FirestoreService(private val db: FirebaseFirestore) {
             Status.Success
         } catch (e: Exception) {
             Status.Failure(e.message ?: "Failed to get change status")
+        }
+
+    suspend fun addTestimony(testimony: Testimony): Status =
+        try {
+            db.collection("testimonials").document(testimony.id).set(testimony).await()
+            Status.Success
+        }catch (e: Exception) {
+            Status.Failure(e.message ?: "Failed to create testimony")
+        }
+
+    suspend fun getTestimony(): Status =
+        try {
+            val result =  db.collection("testimonials").limit(5).get().await()
+            val testimonials = result.toObjects(Testimony::class.java)
+            Status.SuccessWithData(testimonials)
+        }catch (e: Exception) {
+            Status.Failure(e.message ?: "Failed to get testimony")
         }
 }

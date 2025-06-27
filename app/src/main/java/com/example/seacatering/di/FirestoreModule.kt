@@ -12,10 +12,13 @@ import com.example.seacatering.domain.repository.SubscriptionRepository
 import com.example.seacatering.domain.repository.UserRepository
 import com.example.seacatering.domain.usecase.CancelSubscriptionUseCase
 import com.example.seacatering.domain.usecase.CreateSubscriptionUseCase
+import com.example.seacatering.domain.usecase.CreateTestimonyUseCase
 import com.example.seacatering.domain.usecase.CreateUserUseCase
 import com.example.seacatering.domain.usecase.GetAllMenuUseCase
 import com.example.seacatering.domain.usecase.GetMenuDetailUseCase
 import com.example.seacatering.domain.usecase.GetSubscriptionUseCase
+import com.example.seacatering.domain.usecase.GetTestimonialsUseCase
+import com.example.seacatering.domain.usecase.GetUserDataUseCase
 import com.example.seacatering.domain.usecase.TogglePauseSubscriptionUseCase
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -72,4 +75,13 @@ object FirestoreModule {
     @Provides
     fun provideCancelSubscriptionUseCase(repo: SubscriptionRepository): CancelSubscriptionUseCase =
         CancelSubscriptionUseCase(repo)
+    @Provides
+    fun provideCreateTestimonyUseCase(repo: UserRepository): CreateTestimonyUseCase =
+        CreateTestimonyUseCase(repo)
+    @Provides
+    fun provideGetUserDataUseCase(repo: UserRepository): GetUserDataUseCase =
+        GetUserDataUseCase(repo)
+    @Provides
+    fun provideGetTestimonialsUseCase(repo: UserRepository): GetTestimonialsUseCase =
+        GetTestimonialsUseCase(repo)
 }

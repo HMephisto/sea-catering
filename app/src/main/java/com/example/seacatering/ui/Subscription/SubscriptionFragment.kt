@@ -1,5 +1,6 @@
 package com.example.seacatering.ui.Subscription
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -9,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -44,6 +47,8 @@ class SubscriptionFragment : Fragment(), SubscriptionAdapter.OnItemClickListener
     private var tempSelectedId: String = ""
     private var tempStartDate: String = ""
 
+    private lateinit var launcher: ActivityResultLauncher<Intent>
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -60,6 +65,7 @@ class SubscriptionFragment : Fragment(), SubscriptionAdapter.OnItemClickListener
         Log.e("status", "halo")
 
         initListView()
+        onSubscriptionAdded()
         setupFab()
         swipeRefresh()
         setupObserver()
@@ -86,8 +92,8 @@ class SubscriptionFragment : Fragment(), SubscriptionAdapter.OnItemClickListener
 
     private fun setupFab(){
         binding.fabAdd.setOnClickListener{
-            val intent = Intent(this.context, SubscriptionFormActivity::class.java)
-            startActivity(intent)
+            val intent = Intent(requireContext(), SubscriptionFormActivity::class.java)
+            launcher.launch(intent)
         }
     }
 
@@ -196,6 +202,14 @@ class SubscriptionFragment : Fragment(), SubscriptionAdapter.OnItemClickListener
                 val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                 val formattedDate = formatter.format(currentDate)
                 viewModel.cancelSubsciption(tempSelectedId, formattedDate)
+            }
+        }
+    }
+
+    private fun onSubscriptionAdded(){
+        launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                setupRequest()
             }
         }
     }
