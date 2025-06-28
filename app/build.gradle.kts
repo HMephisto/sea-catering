@@ -54,7 +54,7 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.14.1")
     kapt ("com.github.bumptech.glide:compiler:4.16.0")
     implementation ("androidx.datastore:datastore-preferences:1.1.7")
-
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

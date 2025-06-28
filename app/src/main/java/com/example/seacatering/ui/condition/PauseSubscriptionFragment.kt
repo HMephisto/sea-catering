@@ -15,6 +15,7 @@ import com.example.seacatering.databinding.FragmentConditionTwobuttonBinding
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -23,8 +24,8 @@ class PauseSubscriptionFragment : DialogFragment() {
     private var _binding: FragmentConditionPauseSubscriptionBinding? = null
     private val binding get() = _binding!!
 
-    private var startDate: String = ""
-    private var endDate: String = ""
+    private var startDate: Timestamp? = null
+    private var endDate: Timestamp? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,7 +72,7 @@ class PauseSubscriptionFragment : DialogFragment() {
                 val selectedDate = Date(selection)
                 val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                 binding.inputStartDate.setText(formatter.format(selectedDate))
-                startDate = formatter.format(selectedDate)
+                startDate = Timestamp(Date(selection))
             }
         }
 
@@ -90,7 +91,7 @@ class PauseSubscriptionFragment : DialogFragment() {
                 val selectedDate = Date(selection)
                 val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                 binding.inputEndDate.setText(formatter.format(selectedDate))
-                endDate = formatter.format(selectedDate)
+                endDate = Timestamp(Date(selection))
             }
         }
 
@@ -98,10 +99,14 @@ class PauseSubscriptionFragment : DialogFragment() {
 
     private fun setNavigation(){
         binding.registerConditionButton.setOnClickListener{
-            if (startDate.isBlank() or endDate.isBlank()){
+            if (startDate == null || endDate == null){
                 Toast.makeText(requireContext(), "Please select a date", Toast.LENGTH_SHORT).show()
             }else{
-                setFragmentResult("pauseResult", bundleOf("startDate" to startDate, "endDate" to endDate))
+                val result = Bundle().apply {
+                    putLong("startDate", startDate!!.toDate().time)
+                    putLong("endDate", endDate!!.toDate().time)
+                }
+                setFragmentResult("pauseResult", result)
                 dialog!!.dismiss()
             }
         }

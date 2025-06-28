@@ -18,6 +18,7 @@ import com.example.seacatering.databinding.FragmentAuthLoginBinding
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.seacatering.domain.model.Status
+import com.example.seacatering.domain.model.User
 import com.example.seacatering.ui.condition.LoadingCondition
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,9 +48,7 @@ class AuthLoginFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.userId.collect { id ->
                 if (!id.isNullOrBlank()) {
-                    Log.e("status", id)
-                    findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
-                    requireActivity().finish()
+                    viewModel.getUserData(id)
                 }
             }
         }
@@ -78,40 +77,65 @@ class AuthLoginFragment : Fragment() {
     }
 
     private fun setupObserve() {
+        viewModel.getUserDataState.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Status.SuccessWithData<*> -> {
+                    dialog.dismiss()
+                    val user = result.data as User
+                    if (user.status == "user") {
+                        findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
+                        requireActivity().finish()
+                    } else {
+                        findNavController().navigate(R.id.action_authLoginFragment_to_adminActivity)
+                        requireActivity().finish()
+                    }
+                }
+
+                is Status.Loading -> {
+                    checkExistingDialog()
+                }
+
+                else -> {}
+            }
+        }
+
         viewModel.authState.observe(viewLifecycleOwner) { result ->
             when (result) {
                 is Status.Failure -> {
                     dialog.dismiss()
-                    Log.e("GAGAL", result.message)
-//                    Toast.makeText(requireContext(), "Login failed!! Check your email or password", Toast.LENGTH_SHORT).apply {
-//                        view?.setBackgroundColor(Color.RED)
-//                        view?.findViewById<TextView>(android.R.id.message)?.setTextColor(Color.WHITE)
-//                        show()
-//                    }
+                    Toast.makeText(
+                        requireContext(),
+                        "Login failed!! Check your email or password",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     findNavController().navigate(R.id.action_authLoginFragment_to_authLoginErrorCondition)
                 }
 
                 is Status.Success -> {
-                    Log.e("Berhasil", "")
                     dialog.dismiss()
                     Toast.makeText(requireContext(), "Login success!!", Toast.LENGTH_SHORT).show()
 
                     val userId = FirebaseAuth.getInstance().currentUser?.uid
-                    Log.e("savedID", userId.toString())
                     viewModel.saveUserId(userId.toString())
 
-                    findNavController().navigate(R.id.action_authLoginFragment_to_mainActivity)
-                    requireActivity().finish()
+                    viewModel.getUserData(userId.toString())
                 }
 
                 is Status.Loading -> {
-                    Log.e("Loading", "load")
-                    dialog.show(parentFragmentManager, "MyCustomDialog")
-                }else -> {}
+                    checkExistingDialog()
+                }
+
+                else -> {}
             }
         }
     }
 
+    private fun checkExistingDialog(){
+        val existing = parentFragmentManager.findFragmentByTag("MyCustomDialog")
+        if (existing == null) {
+            dialog.show(parentFragmentManager, "MyCustomDialog")
+        }
+    }
     private fun initTextWatcher() {
         textWatcherEmail()
         textWatcherPassword()

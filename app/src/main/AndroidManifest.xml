@@ -16,6 +16,9 @@
         android:theme="@style/Theme.SeaCatering"
         tools:targetApi="31">
         <activity
+            android:name=".ui.admin.AdminActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.Subscription.SubscriptionFormActivity"
             android:exported="false" />
         <activity

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_authLoginFragment_to_authLoginErrorCondition"
             app:destination="@id/authLoginErrorCondition" />
+        <action
+            android:id="@+id/action_authLoginFragment_to_adminActivity"
+            app:destination="@id/adminActivity" />
     </fragment>
 
     <fragment
@@ -42,5 +45,10 @@
         android:id="@+id/authLoginErrorCondition"
         android:name="com.example.seacatering.ui.condition.AuthLoginErrorCondition"
         android:label="AuthLoginErrorCondition" />
+    <activity
+        android:id="@+id/adminActivity"
+        android:name="com.example.seacatering.ui.admin.AdminActivity"
+        android:label="activity_admin"
+        tools:layout="@layout/activity_admin" />
 
 </navigation>

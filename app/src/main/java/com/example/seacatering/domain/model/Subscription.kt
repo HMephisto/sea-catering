@@ -14,6 +14,7 @@ data class Subscription(
     val status: String = "",
     val total_price: Double = 0.0,
     val end_date: String = "",
-    val pause_period_start: String = "",
-    val pause_period_end: String = "",
+    val pause_period_start: Timestamp? = null,
+    val pause_period_end: Timestamp? = null,
+    val created_at: Timestamp = Timestamp.now(),
 )

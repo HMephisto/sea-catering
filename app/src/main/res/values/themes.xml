@@ -11,8 +11,6 @@
         <item name="colorSecondaryVariant">@color/primary_variant</item>
         <item name="colorOnSecondary">@color/white</item>
 
-
-
         <item name="android:statusBarColor">@color/secondary_variant</item>
     </style>
 

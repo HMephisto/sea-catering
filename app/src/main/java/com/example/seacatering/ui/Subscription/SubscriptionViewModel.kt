@@ -12,6 +12,7 @@ import com.example.seacatering.domain.usecase.GetAllMenuUseCase
 import com.example.seacatering.domain.usecase.GetSubscriptionUseCase
 import com.example.seacatering.domain.usecase.GetUserIdUseCase
 import com.example.seacatering.domain.usecase.TogglePauseSubscriptionUseCase
+import com.google.firebase.Timestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -46,7 +47,7 @@ class SubscriptionViewModel @Inject constructor(
     val userId: StateFlow<String?> = getUserIdUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
-    fun togglePauseSubsciption(subscriptionId:String, startDate: String, endDate: String, pause: Boolean){
+    fun togglePauseSubsciption(subscriptionId:String, startDate: Timestamp, endDate: Timestamp, pause: Boolean){
         viewModelScope.launch{
             _togglePauseSubscriptionState.value = Status.Loading
 

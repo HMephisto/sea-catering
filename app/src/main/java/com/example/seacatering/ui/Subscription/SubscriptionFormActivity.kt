@@ -89,19 +89,21 @@ class SubscriptionFormActivity : AppCompatActivity(), SubscriptionSelectMealAdap
     private fun setupCreateSubscriptionRequest(){
         lifecycleScope.launch {
             viewModel.userId.collect { id ->
-                var subscription = Subscription(
-                    id + selectedMenu,
-                    id.toString(),
-                    selectedMenu,
-                    binding.subscriptionInputName.text.toString(),
-                    binding.subscriptionInputNumber.text.toString(),
-                    mealTypes,
-                    deliveryDays,
-                    binding.subscriptionInputAllergies.text.toString(),
-                    "Active",
-                    totalPrice
-                )
-                viewModel.createSubscription(subscription)
+                if (!id.isNullOrBlank()){
+                    var subscription = Subscription(
+                        id + selectedMenu,
+                        id.toString(),
+                        selectedMenu,
+                        binding.subscriptionInputName.text.toString(),
+                        binding.subscriptionInputNumber.text.toString(),
+                        mealTypes,
+                        deliveryDays,
+                        binding.subscriptionInputAllergies.text.toString(),
+                        "Active",
+                        totalPrice
+                    )
+                    viewModel.createSubscription(subscription)
+                }
             }
         }
     }

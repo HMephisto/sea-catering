@@ -110,25 +110,26 @@ class ProfileFragment : Fragment() {
                 else -> {}
             }
         }
+        viewModel.logoutState.observe(viewLifecycleOwner) { result ->
+            when (result) {
+                is Status.Loading -> {}
+
+                Status.Success -> {
+                    viewModel.saveUserId("")
+                    val intent = Intent(this.context, AuthActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+
+                else -> {}
+            }
+        }
     }
 
     private fun onLogoutButton() {
-        viewModel.logout()
+
         binding.logoutButton.setOnClickListener {
-            viewModel.logoutState.observe(viewLifecycleOwner) { result ->
-                when (result) {
-                    is Status.Loading -> {}
-
-                    Status.Success -> {
-                        viewModel.saveUserId("")
-                        val intent = Intent(this.context, AuthActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
-                    }
-
-                    else -> {}
-                }
-            }
+            viewModel.logout()
         }
     }
 }

@@ -14,8 +14,12 @@ import com.example.seacatering.domain.usecase.CancelSubscriptionUseCase
 import com.example.seacatering.domain.usecase.CreateSubscriptionUseCase
 import com.example.seacatering.domain.usecase.CreateTestimonyUseCase
 import com.example.seacatering.domain.usecase.CreateUserUseCase
+import com.example.seacatering.domain.usecase.GetActiveSubscriptionsUseCase
 import com.example.seacatering.domain.usecase.GetAllMenuUseCase
+import com.example.seacatering.domain.usecase.GetAllSubscriptionsUseCase
 import com.example.seacatering.domain.usecase.GetMenuDetailUseCase
+import com.example.seacatering.domain.usecase.GetNewSubscriptionDataUseCase
+import com.example.seacatering.domain.usecase.GetReactivationUseCase
 import com.example.seacatering.domain.usecase.GetSubscriptionUseCase
 import com.example.seacatering.domain.usecase.GetTestimonialsUseCase
 import com.example.seacatering.domain.usecase.GetUserDataUseCase
@@ -75,6 +79,23 @@ object FirestoreModule {
     @Provides
     fun provideCancelSubscriptionUseCase(repo: SubscriptionRepository): CancelSubscriptionUseCase =
         CancelSubscriptionUseCase(repo)
+
+    @Provides
+    fun provideGetAllSubscriptionUseCase(repo: SubscriptionRepository): GetAllSubscriptionsUseCase =
+        GetAllSubscriptionsUseCase(repo)
+
+    @Provides
+    fun provideGetNewSubscriptionDataUseCase(repo: SubscriptionRepository): GetNewSubscriptionDataUseCase =
+        GetNewSubscriptionDataUseCase(repo)
+
+    @Provides
+    fun provideReactivationUseCase(repo: SubscriptionRepository): GetReactivationUseCase =
+        GetReactivationUseCase(repo)
+
+    @Provides
+    fun provideActiveSubscriptionsUseCase(repo: SubscriptionRepository): GetActiveSubscriptionsUseCase =
+        GetActiveSubscriptionsUseCase(repo)
+
     @Provides
     fun provideCreateTestimonyUseCase(repo: UserRepository): CreateTestimonyUseCase =
         CreateTestimonyUseCase(repo)

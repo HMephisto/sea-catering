@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.seacatering.domain.model.Status
+import com.example.seacatering.domain.usecase.GetUserDataUseCase
 import com.example.seacatering.domain.usecase.GetUserIdUseCase
 import com.example.seacatering.domain.usecase.LoginUseCase
 import com.example.seacatering.domain.usecase.SaveUserIdUseCase
@@ -19,10 +20,14 @@ import javax.inject.Inject
 class AuthLoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase,
     private val saveUserIdUseCase: SaveUserIdUseCase,
-    private val getUserIdUseCase: GetUserIdUseCase
+    private val getUserIdUseCase: GetUserIdUseCase,
+    private val getUserDataUseCase: GetUserDataUseCase
 ) : ViewModel() {
     private val _authState = MutableLiveData<Status>()
     val authState: LiveData<Status> = _authState
+
+    private val _getUserDataState = MutableLiveData<Status>()
+    val getUserDataState: LiveData<Status> = _getUserDataState
 
     fun login(email: String, password: String){
         viewModelScope.launch{
@@ -42,4 +47,13 @@ class AuthLoginViewModel @Inject constructor(
     val userId: StateFlow<String?> = getUserIdUseCase()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), null)
 
+    fun getUserData(userId: String){
+        viewModelScope.launch{
+            _getUserDataState.value = Status.Loading
+
+            val result = getUserDataUseCase(userId)
+
+            _getUserDataState.value = result
+        }
+    }
 }

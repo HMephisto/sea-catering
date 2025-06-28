@@ -25,6 +25,7 @@ import com.example.seacatering.domain.model.SubscriptionWithMenu
 import com.example.seacatering.ui.condition.CancelConfirmationCondition
 import com.example.seacatering.ui.condition.PauseSubscriptionFragment
 import com.example.seacatering.ui.condition.StartSubscriptionFragment
+import com.google.firebase.Timestamp
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -45,7 +46,7 @@ class SubscriptionFragment : Fragment(), SubscriptionAdapter.OnItemClickListener
     private val startModal = StartSubscriptionFragment()
 
     private var tempSelectedId: String = ""
-    private var tempStartDate: String = ""
+    private var tempStartDate: Timestamp? = null
 
     private lateinit var launcher: ActivityResultLauncher<Intent>
 
@@ -173,11 +174,11 @@ class SubscriptionFragment : Fragment(), SubscriptionAdapter.OnItemClickListener
 
     private fun setupPause(){
         parentFragmentManager.setFragmentResultListener("pauseResult", this) {_, bundle ->
-            val startDate = bundle.getString("startDate")
-            val endDate = bundle.getString("endDate")
+            val startDate = bundle.getLong("startDate", -1L)
+            val endDate = bundle.getLong("endDate", -1L)
 
-            viewModel.togglePauseSubsciption(tempSelectedId, startDate.toString(),
-                endDate.toString(), true)
+            viewModel.togglePauseSubsciption(tempSelectedId, Timestamp(Date(startDate)),
+                Timestamp(Date(endDate)), true)
         }
     }
 
@@ -186,10 +187,8 @@ class SubscriptionFragment : Fragment(), SubscriptionAdapter.OnItemClickListener
             val result = bundle.getBoolean("start")
             if (result){
                 val currentDate = Date()
-                val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-                val formattedDate = formatter.format(currentDate)
-                viewModel.togglePauseSubsciption(tempSelectedId, tempStartDate,
-                    formattedDate, false)
+                viewModel.togglePauseSubsciption(tempSelectedId, tempStartDate!! ,
+                    Timestamp(currentDate), false)
             }
         }
     }
