@@ -32,7 +32,7 @@ class AuthActivity : AppCompatActivity() {
     private fun setNavigation(){
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.navAuthContainer) as NavHostFragment
         navController = navHostFragment.navController
-        navController.navigate(R.id.authLoginFragment)
+        navController.navigate(R.id.splashFragment)
 
         if (!navController.popBackStack()) finish()
     }
