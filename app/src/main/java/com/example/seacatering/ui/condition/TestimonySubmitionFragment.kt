@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
@@ -16,7 +17,7 @@ import com.example.seacatering.databinding.FragmentConditionTwobuttonBinding
 class TestimonySubmitionFragment : DialogFragment() {
     private var _binding: FragmentAddTestimonyBinding? = null
     private val binding get() = _binding!!
-    private var selectedItem: Int = 0
+    private var selectedItem: Int = -1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,7 +48,7 @@ class TestimonySubmitionFragment : DialogFragment() {
             dialog!!.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         }
 
-        val items = listOf("  1 Star", "  2 Star" , "  3 Star", "  4 Star", "  5 Star")
+        val items = listOf("  1 Star", "  2 Star", "  3 Star", "  4 Star", "  5 Star")
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, items)
         binding.ratingSpinner.setAdapter(adapter)
 
@@ -56,15 +57,24 @@ class TestimonySubmitionFragment : DialogFragment() {
         }
     }
 
-    private fun setNavigation(){
+    private fun setNavigation() {
         binding.registerSecondConditionButton.setOnClickListener {
             dialog!!.dismiss()
         }
 
-        binding.registerConditionButton.setOnClickListener{
-            setFragmentResult("testimonyResult", bundleOf("message" to binding.inputTestimony.text.toString(),
-                "rating" to selectedItem))
-            dialog!!.dismiss()
+        binding.registerConditionButton.setOnClickListener {
+            if (binding.inputTestimony.text.toString() == "" || selectedItem == -1) {
+                Toast.makeText(requireContext(), "data tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            } else {
+
+                setFragmentResult(
+                    "testimonyResult", bundleOf(
+                        "message" to binding.inputTestimony.text.toString(),
+                        "rating" to selectedItem
+                    )
+                )
+                dialog!!.dismiss()
+            }
         }
     }
 

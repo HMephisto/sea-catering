@@ -23,6 +23,7 @@ import com.example.seacatering.domain.usecase.GetReactivationUseCase
 import com.example.seacatering.domain.usecase.GetSubscriptionUseCase
 import com.example.seacatering.domain.usecase.GetTestimonialsUseCase
 import com.example.seacatering.domain.usecase.GetUserDataUseCase
+import com.example.seacatering.domain.usecase.GetUserTestimonyUseCase
 import com.example.seacatering.domain.usecase.TogglePauseSubscriptionUseCase
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
@@ -105,4 +106,7 @@ object FirestoreModule {
     @Provides
     fun provideGetTestimonialsUseCase(repo: UserRepository): GetTestimonialsUseCase =
         GetTestimonialsUseCase(repo)
+    @Provides
+    fun provideGetUserTestimonialsUseCase(repo: UserRepository): GetUserTestimonyUseCase =
+        GetUserTestimonyUseCase(repo)
 }

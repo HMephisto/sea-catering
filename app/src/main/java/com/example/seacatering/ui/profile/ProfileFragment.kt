@@ -1,4 +1,4 @@
-package com.example.seacatering.ui
+package com.example.seacatering.ui.profile
 
 
 import android.content.Intent
@@ -11,20 +11,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
-import com.example.seacatering.R
 import com.example.seacatering.databinding.FragmentProfileBinding
 import com.example.seacatering.domain.model.Status
-import com.example.seacatering.domain.model.SubscriptionWithMenu
 import com.example.seacatering.domain.model.Testimony
 import com.example.seacatering.domain.model.User
 import com.example.seacatering.ui.auth.AuthActivity
 import com.example.seacatering.ui.condition.TestimonySubmitionFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.UUID
 import kotlin.getValue
 
 @AndroidEntryPoint
@@ -84,7 +79,7 @@ class ProfileFragment : Fragment() {
             val message = bundle.getString("message")
             val rating = bundle.getInt("rating")
 
-            val testimony = Testimony(userId, userId, username, message.toString(), rating)
+            val testimony = Testimony(UUID.randomUUID().toString(), userId, username, message.toString(), rating)
             viewModel.createTestimony(testimony)
         }
     }

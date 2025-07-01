@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.seacatering.databinding.ItemMenuSimpleBinding
 import com.example.seacatering.domain.model.Menu
+import java.text.NumberFormat
+import java.util.Locale
 
 class SubscriptionSelectMealAdapter(private val listener: OnItemClickListener) :
     RecyclerView.Adapter<SubscriptionSelectMealAdapter.ViewHolder>() {
@@ -22,7 +24,7 @@ class SubscriptionSelectMealAdapter(private val listener: OnItemClickListener) :
                 itemCard.setOnClickListener { listener.onItemClick(item) }
 
                 planName.text = item.name
-                planPrice.text = "Rp. " + item.price.toString()
+                planPrice.text = formatToIDR(item.price)
                 val valuesThumbnail = item.image_url
                 val thumbnail = menuImage
                 Glide.with(thumbnail)
@@ -30,6 +32,12 @@ class SubscriptionSelectMealAdapter(private val listener: OnItemClickListener) :
                     .into(thumbnail)
             }
         }
+    }
+
+    fun formatToIDR(amount: Double): String {
+        val localeID = Locale("in", "ID")
+        val formatter = NumberFormat.getCurrencyInstance(localeID)
+        return formatter.format(amount)
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<Menu>() {

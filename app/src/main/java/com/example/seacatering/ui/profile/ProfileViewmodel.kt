@@ -1,4 +1,4 @@
-package com.example.seacatering.ui
+package com.example.seacatering.ui.profile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,6 +9,7 @@ import com.example.seacatering.domain.model.Testimony
 import com.example.seacatering.domain.usecase.CreateTestimonyUseCase
 import com.example.seacatering.domain.usecase.GetUserDataUseCase
 import com.example.seacatering.domain.usecase.GetUserIdUseCase
+import com.example.seacatering.domain.usecase.GetUserTestimonyUseCase
 import com.example.seacatering.domain.usecase.LogoutUseCase
 import com.example.seacatering.domain.usecase.SaveUserIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,13 +25,17 @@ class ProfileViewmodel @Inject constructor (
     private val saveUserIdUseCase: SaveUserIdUseCase,
     private val getUserIdUseCase: GetUserIdUseCase,
     private val createTestimonyUseCase: CreateTestimonyUseCase,
-    private val getUserDataUseCase: GetUserDataUseCase
+    private val getUserDataUseCase: GetUserDataUseCase,
+    private val getUserTestimonyUseCase: GetUserTestimonyUseCase
 ) : ViewModel() {
     private val _logoutState = MutableLiveData<Status>()
     val logoutState: LiveData<Status> = _logoutState
 
     private val _createTestimonyState = MutableLiveData<Status>()
     val createTestimonyState: LiveData<Status> = _createTestimonyState
+
+    private val _getUserTestimonyState = MutableLiveData<Status>()
+    val getUserTestimonyState: LiveData<Status> = _getUserTestimonyState
 
     private val _getUserDataState = MutableLiveData<Status>()
     val getUserDataState: LiveData<Status> = _getUserDataState
@@ -71,6 +76,15 @@ class ProfileViewmodel @Inject constructor (
             val result = createTestimonyUseCase(testimony)
 
             _createTestimonyState.value = result
+        }
+    }
+    fun getUserTestimony(userId: String){
+        viewModelScope.launch{
+            _getUserTestimonyState.value = Status.Loading
+
+            val result = getUserTestimonyUseCase(userId)
+
+            _getUserTestimonyState.value = result
         }
     }
 }

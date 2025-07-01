@@ -52,7 +52,7 @@
         tools:layout="@layout/activity_admin" />
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.seacatering.ui.SplashFragment"
+        android:name="com.example.seacatering.ui.splash.SplashFragment"
         android:label="@null"
         tools:layout="@layout/fragment_splash">
         <action

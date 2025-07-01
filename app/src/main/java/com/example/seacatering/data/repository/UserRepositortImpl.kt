@@ -11,5 +11,6 @@ class UserRepositortImpl(private val firestoreService: FirestoreService) : UserR
     override suspend fun createUser(user: User): Status = firestoreService.createUser(user)
     override suspend fun createTestimony(testimony: Testimony): Status = firestoreService.addTestimony(testimony)
     override suspend fun getTestimonials(): Status = firestoreService.getTestimony()
+    override suspend fun getUserTestimony(userId : String): Status = firestoreService.getUserTestimony(userId)
 
 }

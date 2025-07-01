@@ -1,9 +1,6 @@
-package com.example.seacatering.ui
+package com.example.seacatering.ui.splash
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,7 +13,6 @@ import com.example.seacatering.databinding.FragmentSplashBinding
 import com.example.seacatering.domain.model.Status
 import com.example.seacatering.domain.model.User
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlin.getValue
 
@@ -42,16 +38,17 @@ class SplashFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Handler(Looper.getMainLooper()).postDelayed({
             lifecycleScope.launch {
-                    val id = viewModel.userId.first()
+                var count = 0
+                viewModel.userId.collect { id ->
+                    count++
                     if (!id.isNullOrBlank()) {
                         viewModel.getUserData(id)
-                    } else if (id.isNullOrBlank()){
+                    } else if (id.isNullOrBlank() && count == 2){
                         findNavController().navigate(R.id.action_splashFragment_to_authLoginFragment)
                     }
             }
-        }, 3000)
+        }
 
 
         viewModel.getUserDataState.observe(viewLifecycleOwner)

@@ -32,7 +32,7 @@ class SubscriptionFormActivity : AppCompatActivity(), SubscriptionSelectMealAdap
     private val modalBottomSheet = BottomSheetFragment()
 
     private var selectedMenu: String = ""
-    private var selectedPrice: Int = 0
+    private var selectedPrice: Double = 0.0
     private var breakfastMealType: String = ""
     private var lunchMealType: String = ""
     private var dinnerMealType: String = ""

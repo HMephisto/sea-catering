@@ -15,6 +15,8 @@ import com.example.seacatering.domain.model.Status
 import com.example.seacatering.ui.condition.BottomSheetFragment
 import com.google.android.material.appbar.MaterialToolbar
 import dagger.hilt.android.AndroidEntryPoint
+import java.text.NumberFormat
+import java.util.Locale
 
 @AndroidEntryPoint
 class MenuDetailActivity : AppCompatActivity() {
@@ -66,7 +68,7 @@ class MenuDetailActivity : AppCompatActivity() {
                         .into(cover)
 
                     title.text = menu.name
-                    price.text = "Rp. " + menu.price.toString()
+                    price.text = formatToIDR(menu.price)
                     description.text = menu.description
                 }
 
@@ -74,6 +76,12 @@ class MenuDetailActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    fun formatToIDR(amount: Double): String {
+        val localeID = Locale("in", "ID")
+        val formatter = NumberFormat.getCurrencyInstance(localeID)
+        return formatter.format(amount)
     }
 
     private fun onBackClick() {

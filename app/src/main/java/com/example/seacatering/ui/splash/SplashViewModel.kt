@@ -1,4 +1,4 @@
-package com.example.seacatering.ui
+package com.example.seacatering.ui.splash
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,8 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.seacatering.domain.model.Status
 import com.example.seacatering.domain.usecase.GetUserDataUseCase
 import com.example.seacatering.domain.usecase.GetUserIdUseCase
-import com.example.seacatering.domain.usecase.LoginUseCase
-import com.example.seacatering.domain.usecase.SaveUserIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

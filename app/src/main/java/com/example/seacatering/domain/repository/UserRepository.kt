@@ -9,4 +9,5 @@ interface UserRepository {
     suspend fun createUser(user: User): Status
     suspend fun createTestimony(testimony: Testimony) : Status
     suspend fun getTestimonials(): Status
+    suspend fun getUserTestimony(userId: String): Status
 }

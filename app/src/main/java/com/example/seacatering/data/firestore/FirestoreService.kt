@@ -143,6 +143,16 @@ class FirestoreService(private val db: FirebaseFirestore) {
             Status.Failure(e.message ?: "Failed to get testimony")
         }
 
+    suspend fun getUserTestimony(userId: String): Status =
+        try {
+            val result = db.collection("testimonials").document(userId).get().await()
+            val testimonials = result.toObject(Testimony::class.java)
+            val user = result.toObject(User::class.java)
+            Status.SuccessWithData(testimonials)
+        } catch (e: Exception) {
+            Status.Failure(e.message ?: "Failed to get testimony")
+        }
+
     suspend fun getAllSubscription(status: String = ""): Status =
         try {
             var result: QuerySnapshot

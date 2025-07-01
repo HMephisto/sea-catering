@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.seacatering.databinding.ItemMenuBinding
 import com.example.seacatering.domain.model.Menu
+import java.text.NumberFormat
+import java.util.Locale
 
 class MenuAdapter(private val listener: OnItemClickListener) :
     RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
@@ -23,7 +25,7 @@ class MenuAdapter(private val listener: OnItemClickListener) :
 
                 planName.text = item.name
                 planDescription.text = item.description
-                planPrice.text = "Rp. " + item.price.toString()
+                planPrice.text = formatToIDR(item.price)
                 val valuesThumbnail = item.image_url
                 val thumbnail = menuImage
                 Glide.with(thumbnail)
@@ -43,6 +45,12 @@ class MenuAdapter(private val listener: OnItemClickListener) :
     var items: List<Menu>
         get() = differ.currentList
         set(value) = differ.submitList(value)
+
+    fun formatToIDR(amount: Double): String {
+        val localeID = Locale("in", "ID")
+        val formatter = NumberFormat.getCurrencyInstance(localeID)
+        return formatter.format(amount)
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

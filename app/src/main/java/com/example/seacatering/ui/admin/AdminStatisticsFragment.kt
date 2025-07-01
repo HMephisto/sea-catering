@@ -237,7 +237,7 @@ class AdminStatisticsFragment : Fragment() {
         calendar.timeInMillis = startDateMillis
         while (calendar.timeInMillis <= endDateMillis) {
             val dateStr = sdf.format(calendar.time)
-            dateMap[dateStr] = 0 // initialize count
+            dateMap[dateStr] = 0
             calendar.add(Calendar.DATE, 1)
         }
 
@@ -292,11 +292,11 @@ class AdminStatisticsFragment : Fragment() {
 
         mrrData.entries.sortedBy { it.key }.forEachIndexed { index, entry ->
             entries.add(BarEntry(index.toFloat(), entry.value))
-            labels.add(entry.key) // X-axis label (month)
+            labels.add(entry.key)
         }
 
         val dataSet = BarDataSet(entries, "MRR (Monthly Revenue)").apply {
-            color = Color.parseColor("#3F51B5") // blue
+            color = Color.parseColor("#3F51B5")
             valueTextColor = Color.BLACK
             valueTextSize = 12f
         }
@@ -304,13 +304,11 @@ class AdminStatisticsFragment : Fragment() {
         val barData = BarData(dataSet)
         binding.mrrChart.data = barData
 
-// Hide Y-axis labels if desired
         binding.mrrChart.axisLeft.setDrawLabels(false)
         binding.mrrChart.axisRight.isEnabled = false
         binding.mrrChart.axisLeft.setDrawGridLines(false)
         binding.mrrChart.axisLeft.setDrawAxisLine(false)
 
-// X-axis formatting
         binding.mrrChart.xAxis.valueFormatter = IndexAxisValueFormatter(labels)
         binding.mrrChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
         binding.mrrChart.xAxis.granularity = 1f
@@ -318,18 +316,17 @@ class AdminStatisticsFragment : Fragment() {
         binding.mrrChart.xAxis.setDrawGridLines(false)
         binding.mrrChart.xAxis.setDrawAxisLine(false)
 
-// Chart appearance
         binding.mrrChart.description.isEnabled = false
         binding.mrrChart.setTouchEnabled(true)
         binding.mrrChart.setPinchZoom(true)
-        binding.mrrChart.setFitBars(true) // make bars fit nicely
+        binding.mrrChart.setFitBars(true)
         binding.mrrChart.animateY(1000)
         binding.mrrChart.invalidate()
     }
 
 
     fun getStartOfDayUtcMillis(millisLocal: Long): Long {
-        val localCal = Calendar.getInstance() // Local time
+        val localCal = Calendar.getInstance()
         localCal.timeInMillis = millisLocal
         localCal.set(Calendar.HOUR_OF_DAY, 0)
         localCal.set(Calendar.MINUTE, 0)
@@ -339,7 +336,7 @@ class AdminStatisticsFragment : Fragment() {
     }
 
     fun getEndOfDayUtcMillis(millisLocal: Long): Long {
-        val localCal = Calendar.getInstance() // Local time
+        val localCal = Calendar.getInstance()
         localCal.timeInMillis = millisLocal
         localCal.set(Calendar.HOUR_OF_DAY, 23)
         localCal.set(Calendar.MINUTE, 59)
