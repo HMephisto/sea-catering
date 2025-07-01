@@ -26,7 +26,7 @@ Berikut adalah langkah-langkah untuk menginstal dan menjalankan aplikasi ini di 
 
 1. **Clone repositori ini**:
     ```sh
-    git clone https://github.com/username/repo-name.git
+    git clone https://github.com/HMephisto/sea-catering.git
     ```
 2. **Buka proyek dengan Android Studio**.
 3. **Sinkronisasi project dengan Gradle** untuk mengunduh semua dependensi.
