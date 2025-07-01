@@ -2,9 +2,9 @@
 Sea Catering adalah aplikasi mobile(android) yang berfungsi untuk melakukan langganan catering secara online
 
 ## Daftar Isi
-[Demo](#-demo)
-[Library yang Digunakan](#-library-yang-digunakan)
-[Cara Instalasi](#-car)
+- [Demo](#-demo)
+- [Library yang Digunakan](#-library-yang-digunakan)
+- [Cara Instalasi](#-car)
 
 ## Demo
 kamu bisa mendownload aplikasi [Disini](https://github.com/HMephisto/sea-catering/blob/master/SeaCatering.apk)
